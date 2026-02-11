@@ -53,9 +53,10 @@ const RangeControl: React.FC<{ label: string; value: number; min: number; max: n
 // --- Constants ---
 
 const PREDEFINED_LOGOS = [
-  { id: 'colored', name: 'شعار ملون', url: '/logos/logo-colored.png' },
-  { id: 'dark', name: 'شعار داكن', url: '/logos/logo-dark.png' },
-  { id: 'light', name: 'شعار فاتح', url: '/logos/logo-light.png' },
+  { id: 'main', name: 'شعار رئيسي', url: '/logos/Logo.svg' },
+  { id: 'white', name: 'شعار أبيض', url: '/logos/alinvestor white.svg' },
+  { id: 'alt1', name: 'شعار بديل 1', url: '/logos/Logo (1).svg' },
+  { id: 'alt2', name: 'شعار بديل 2', url: '/logos/Logo (2).svg' },
 ];
 
 // --- Sub-components (Internal Helpers) ---
