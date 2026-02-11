@@ -50,7 +50,15 @@ const RangeControl: React.FC<{ label: string; value: number; min: number; max: n
   </div>
 );
 
-// --- Main App ---
+// --- Constants ---
+
+const PREDEFINED_LOGOS = [
+  { id: 'colored', name: 'شعار ملون', url: '/logos/logo-colored.png' },
+  { id: 'dark', name: 'شعار داكن', url: '/logos/logo-dark.png' },
+  { id: 'light', name: 'شعار فاتح', url: '/logos/logo-light.png' },
+];
+
+// --- Sub-components (Internal Helpers) ---
 
 const App: React.FC = () => {
   const [design, setDesign] = useState<DesignState>({
@@ -125,8 +133,8 @@ const App: React.FC = () => {
   const downloadImage = useCallback(async () => {
     if (previewRef.current === null) return;
     try {
-      const dataUrl = await toPng(previewRef.current, { 
-        cacheBust: true, 
+      const dataUrl = await toPng(previewRef.current, {
+        cacheBust: true,
         pixelRatio: 2,
         skipAutoScale: true
       });
@@ -154,7 +162,7 @@ const App: React.FC = () => {
         <div className="sidebar-content">
           {/* Theme & Layout */}
           <section>
-             <label className="section-label">
+            <label className="section-label">
               <span>🎨</span> اختر الثيم
             </label>
             <ColorPicker selected={design.themeColor} onChange={(color) => setDesign({ ...design, themeColor: color })} />
@@ -177,43 +185,43 @@ const App: React.FC = () => {
             </div>
           </section>
 
-           {/* CSS Customize Section */}
-           <section className="controls-card">
-             <label className="section-label">
+          {/* CSS Customize Section */}
+          <section className="controls-card">
+            <label className="section-label">
               <span>🎚️</span> تخصيص المظهر (CSS)
             </label>
-            
-            <RangeControl 
-              label="حجم الخط" 
-              value={design.fontSize} 
-              min={20} max={80} 
-              onChange={(v) => setDesign({ ...design, fontSize: v })} 
+
+            <RangeControl
+              label="حجم الخط"
+              value={design.fontSize}
+              min={20} max={80}
+              onChange={(v) => setDesign({ ...design, fontSize: v })}
               unit="px"
             />
-             
-             {design.layout === 'overlay' && (
-                <RangeControl 
-                  label="شفافية الخلفية" 
-                  value={Math.round(design.overlayOpacity * 100)} 
-                  min={0} max={100} 
-                  onChange={(v) => setDesign({ ...design, overlayOpacity: v / 100 })} 
-                  unit="%"
-                />
-             )}
 
-            <div className="meta-grid mt-2">
-              <RangeControl 
-                label="إضاءة الصورة" 
-                value={design.imageBrightness} 
-                min={50} max={150} 
-                onChange={(v) => setDesign({ ...design, imageBrightness: v })} 
+            {design.layout === 'overlay' && (
+              <RangeControl
+                label="شفافية الخلفية"
+                value={Math.round(design.overlayOpacity * 100)}
+                min={0} max={100}
+                onChange={(v) => setDesign({ ...design, overlayOpacity: v / 100 })}
                 unit="%"
               />
-              <RangeControl 
-                label="تباين الصورة" 
-                value={design.imageContrast} 
-                min={50} max={150} 
-                onChange={(v) => setDesign({ ...design, imageContrast: v })} 
+            )}
+
+            <div className="meta-grid mt-2">
+              <RangeControl
+                label="إضاءة الصورة"
+                value={design.imageBrightness}
+                min={50} max={150}
+                onChange={(v) => setDesign({ ...design, imageBrightness: v })}
+                unit="%"
+              />
+              <RangeControl
+                label="تباين الصورة"
+                value={design.imageContrast}
+                min={50} max={150}
+                onChange={(v) => setDesign({ ...design, imageContrast: v })}
                 unit="%"
               />
             </div>
@@ -221,12 +229,12 @@ const App: React.FC = () => {
 
           {/* Advanced CSS Editor */}
           <section className="advanced-editor-card">
-             <label className="advanced-label">
+            <label className="advanced-label">
               <span>محرر CSS المتقدم</span>
               <span className="dev-tag">DEV MODE</span>
             </label>
             <div className="class-hint">
-               Classes: <span className="class-name">.poster-root</span>, <span className="class-name">.poster-headline</span>, <span className="class-name">.poster-category</span>, <span className="class-name">.poster-image</span>
+              Classes: <span className="class-name">.poster-root</span>, <span className="class-name">.poster-headline</span>, <span className="class-name">.poster-category</span>, <span className="class-name">.poster-image</span>
             </div>
             <textarea
               value={design.customCss}
@@ -237,8 +245,8 @@ const App: React.FC = () => {
               dir="ltr"
             />
             <button
-               onClick={() => setDesign({...design, customCss: ''})}
-               className="reset-button"
+              onClick={() => setDesign({ ...design, customCss: '' })}
+              className="reset-button"
             >
               إعادة تعيين CSS
             </button>
@@ -277,55 +285,74 @@ const App: React.FC = () => {
 
           {/* Media Uploads */}
           <section className="upload-grid">
-             {/* Main Image */}
+            {/* Main Image */}
             <div>
-                <label className="section-label">صورة الخبر</label>
-                <div className="main-image-upload">
+              <label className="section-label">صورة الخبر</label>
+              <div className="main-image-upload">
                 <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    className="upload-overlay"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="upload-overlay"
                 />
                 <div className="upload-content">
-                    <div className="upload-icon">📷</div>
-                    <p className="upload-text">اضغط لرفع صورة الخبر</p>
+                  <div className="upload-icon">📷</div>
+                  <p className="upload-text">اضغط لرفع صورة الخبر</p>
                 </div>
-                </div>
+              </div>
             </div>
 
-             {/* Logo Upload */}
-             <div>
-                <div className="logo-upload-header">
-                    <label className="section-label">شعار المنصة (اختياري)</label>
-                    {design.logoUrl && (
-                        <button 
-                            onClick={() => setDesign(prev => ({ ...prev, logoUrl: null }))}
-                            className="delete-logo"
-                        >
-                            حذف الشعار ✕
-                        </button>
-                    )}
+            {/* Logo Upload */}
+            <div>
+              <div className="logo-upload-header">
+                <label className="section-label">شعار المنصة (اختياري)</label>
+                {design.logoUrl && (
+                  <button
+                    onClick={() => setDesign(prev => ({ ...prev, logoUrl: null }))}
+                    className="delete-logo"
+                  >
+                    حذف الشعار ✕
+                  </button>
+                )}
+              </div>
+
+              {/* Predefined Logos Selection */}
+              <div className="predefined-logos-grid mb-3">
+                {PREDEFINED_LOGOS.map((logo) => (
+                  <button
+                    key={logo.id}
+                    onClick={() => setDesign({ ...design, logoUrl: logo.url })}
+                    className={`logo-item-button ${design.logoUrl === logo.url ? 'active' : ''}`}
+                    title={logo.name}
+                  >
+                    <img src={logo.url} alt={logo.name} className="logo-item-preview" onError={(e) => {
+                      // Fallback if image doesn't exist yet
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target.parentElement as HTMLElement).innerText = logo.name[0];
+                    }} />
+                  </button>
+                ))}
+              </div>
+
+              <div className="logo-upload-box">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  className="upload-overlay"
+                />
+                <div className="logo-preview-box">
+                  {design.logoUrl ? (
+                    <img src={design.logoUrl} alt="logo preview" className="logo-preview-image" />
+                  ) : (
+                    <span>🏷️</span>
+                  )}
                 </div>
-                <div className="logo-upload-box">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleLogoUpload}
-                        className="upload-overlay"
-                    />
-                    <div className="logo-preview-box">
-                         {design.logoUrl ? (
-                             <img src={design.logoUrl} alt="logo preview" className="logo-preview-image" />
-                         ) : (
-                             <span>🏷️</span>
-                         )}
-                    </div>
-                    <div className="logo-upload-text-container">
-                        <p className="logo-upload-title">اضغط لرفع اللوغو</p>
-                        <p className="logo-upload-hint">يفضل PNG شفاف</p>
-                    </div>
+                <div className="logo-upload-text-container">
+                  <p className="logo-upload-title">اضغط لرفع اللوغو</p>
+                  <p className="logo-upload-hint">يفضل PNG شفاف</p>
                 </div>
+              </div>
             </div>
           </section>
 
@@ -351,58 +378,58 @@ const App: React.FC = () => {
             </div>
           </section>
         </div>
-        
+
         {/* Sticky Footer Button */}
         <div className="sticky-footer">
-             <button
-              onClick={downloadImage}
-              className="download-button"
-            >
-              <span>تحميل الصورة (PNG)</span>
-              <svg className="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-            </button>
+          <button
+            onClick={downloadImage}
+            className="download-button"
+          >
+            <span>تحميل الصورة (PNG)</span>
+            <svg className="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </button>
         </div>
       </aside>
 
       {/* Preview Area */}
       <main className="preview-main">
         <div className="poster-wrapper">
-          <div 
+          <div
             ref={previewRef}
             className="poster-root square-aspect"
             style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
           >
-             {/* Inject Custom CSS */}
-             {design.customCss && (
-                <style dangerouslySetInnerHTML={{ __html: design.customCss }} />
-             )}
+            {/* Inject Custom CSS */}
+            {design.customCss && (
+              <style dangerouslySetInnerHTML={{ __html: design.customCss }} />
+            )}
 
             {/* Background Image with Filters */}
             {design.imageUrl && (
-              <img 
-                src={design.imageUrl} 
-                alt="Post background" 
+              <img
+                src={design.imageUrl}
+                alt="Post background"
                 className="poster-image"
-                style={{ 
-                  filter: `brightness(${design.imageBrightness}%) contrast(${design.imageContrast}%)` 
+                style={{
+                  filter: `brightness(${design.imageBrightness}%) contrast(${design.imageContrast}%)`
                 }}
-                crossOrigin="anonymous" 
+                crossOrigin="anonymous"
               />
             )}
 
             {/* Layout Variants */}
             {design.layout === 'overlay' && (
-              <div 
+              <div
                 className="overlay-layout"
-                style={{ 
-                   background: `linear-gradient(to top, rgba(0,0,0,${design.overlayOpacity + 0.2}) 0%, rgba(0,0,0,${design.overlayOpacity}) 40%, transparent 100%)`
+                style={{
+                  background: `linear-gradient(to top, rgba(0,0,0,${design.overlayOpacity + 0.2}) 0%, rgba(0,0,0,${design.overlayOpacity}) 40%, transparent 100%)`
                 }}
               >
                 <div className="overlay-content">
                   <div className="category-row">
-                    <span 
+                    <span
                       className="poster-category"
                       style={{ backgroundColor: design.themeColor }}
                     >
@@ -410,7 +437,7 @@ const App: React.FC = () => {
                     </span>
                     <div className="category-line" style={{ backgroundColor: design.themeColor }}></div>
                   </div>
-                  <h2 
+                  <h2
                     className="poster-headline"
                     style={{ fontSize: `${design.fontSize}px` }}
                   >
@@ -430,19 +457,19 @@ const App: React.FC = () => {
               <div className="split-layout">
                 <div className="split-spacer"></div>
                 <div className="split-content">
-                  <div 
-                    className="split-accent-line" 
+                  <div
+                    className="split-accent-line"
                     style={{ backgroundColor: design.themeColor }}
                   ></div>
                   <div className="split-category-wrapper">
-                    <span 
+                    <span
                       className="split-category"
                       style={{ backgroundColor: design.themeColor }}
                     >
                       {design.category}
                     </span>
                   </div>
-                  <h2 
+                  <h2
                     className="poster-headline"
                     style={{ fontSize: `${design.fontSize}px` }}
                   >
@@ -450,11 +477,11 @@ const App: React.FC = () => {
                   </h2>
                   <div className="split-footer">
                     <div className="split-logo-circle">
-                         {design.logoUrl ? (
-                            <img src={design.logoUrl} alt="Logo" className="split-logo-image" />
-                        ) : (
-                            <div className="split-logo-placeholder">IQ</div>
-                        )}
+                      {design.logoUrl ? (
+                        <img src={design.logoUrl} alt="Logo" className="split-logo-image" />
+                      ) : (
+                        <div className="split-logo-placeholder">IQ</div>
+                      )}
                     </div>
                     <div>
                       <p className="split-source-name">{design.source}</p>
@@ -467,59 +494,59 @@ const App: React.FC = () => {
 
             {design.layout === 'minimal' && (
               <div className="minimal-layout">
-                <div 
-                    className="minimal-overlay"
-                    style={{ backgroundColor: `rgba(0,0,0,${design.overlayOpacity})` }} 
+                <div
+                  className="minimal-overlay"
+                  style={{ backgroundColor: `rgba(0,0,0,${design.overlayOpacity})` }}
                 ></div>
                 <div className="minimal-content">
-                   <div 
+                  <div
                     className="minimal-accent"
                     style={{ backgroundColor: design.themeColor }}
                   ></div>
-                   <h2 
+                  <h2
                     className="poster-headline arabic-stroke"
                     style={{ fontSize: `${design.fontSize + 4}px` }}
                   >
                     {design.headline}
                   </h2>
                   <div className="minimal-meta-badge">
-                     <span className="minimal-badge-content">
-                        {design.source} • {design.category}
-                     </span>
+                    <span className="minimal-badge-content">
+                      {design.source} • {design.category}
+                    </span>
                   </div>
                 </div>
                 {/* Branding footer */}
                 <div className="minimal-branding">
-                   <div className="minimal-branding-text">
-                      I Q T I S A D — O F F I C I A L
-                   </div>
+                  <div className="minimal-branding-text">
+                    I Q T I S A D — O F F I C I A L
+                  </div>
                 </div>
               </div>
             )}
 
             {/* Watermark/Logo overlay */}
             <div className="logo-badge-container">
-               <div className={`logo-badge ${design.logoUrl ? '' : 'placeholder'}`}>
-                  
-                  {design.logoUrl ? (
-                      <img 
-                        src={design.logoUrl} 
-                        alt="Brand Logo" 
-                        className="logo-badge-image" 
-                      />
-                  ) : (
-                      <>
-                        <div 
-                            className="logo-badge-icon"
-                            style={{ backgroundColor: design.themeColor }}
-                        >IQ</div>
-                        <div className="logo-badge-text-stack">
-                            <span className="logo-badge-main-text">CANVAS</span>
-                            <span className="logo-badge-sub-text">NEWS</span>
-                        </div>
-                      </>
-                  )}
-               </div>
+              <div className={`logo-badge ${design.logoUrl ? '' : 'placeholder'}`}>
+
+                {design.logoUrl ? (
+                  <img
+                    src={design.logoUrl}
+                    alt="Brand Logo"
+                    className="logo-badge-image"
+                  />
+                ) : (
+                  <>
+                    <div
+                      className="logo-badge-icon"
+                      style={{ backgroundColor: design.themeColor }}
+                    >IQ</div>
+                    <div className="logo-badge-text-stack">
+                      <span className="logo-badge-main-text">CANVAS</span>
+                      <span className="logo-badge-sub-text">NEWS</span>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
