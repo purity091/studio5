@@ -419,7 +419,7 @@ const App: React.FC = () => {
                   <div className="poster-footer">
                     <span className="poster-source">{design.source}</span>
                     <div className="flex items-center gap-1">
-                      <span className="footer-tag">Economic News</span>
+                      <span className="footer-tag">منصة المستثمر</span>
                     </div>
                   </div>
                 </div>
