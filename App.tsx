@@ -65,7 +65,7 @@ const App: React.FC = () => {
   const [design, setDesign] = useState<DesignState>({
     headline: 'أدخل العنوان الاقتصادي هنا ليكون جذاباً للمتابعين',
     category: 'عاجل',
-    source: 'أخبار الاقتصاد',
+    source: 'منصة المستثمر الاقتصادية',
     imageUrl: 'https://picsum.photos/800/800?business',
     logoUrl: null,
     themeColor: ThemeColors.ECONOMIC_BLUE,

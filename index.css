@@ -658,8 +658,7 @@ body {
     font-size: 0.75rem;
     text-transform: uppercase;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 /* Split Layout */
