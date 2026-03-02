@@ -67,7 +67,7 @@ const App: React.FC = () => {
     category: 'عاجل',
     source: 'منصة المستثمر الاقتصادية',
     imageUrl: 'https://picsum.photos/800/800?business',
-    logoUrl: null,
+    logoUrl: '/logos/alinvestor white.svg',
     themeColor: ThemeColors.ECONOMIC_BLUE,
     layout: 'overlay',
     overlayOpacity: 0.7,
@@ -447,7 +447,7 @@ const App: React.FC = () => {
                   <div className="poster-footer">
                     <span className="poster-source">{design.source}</span>
                     <div className="flex items-center gap-1">
-                      <span className="footer-tag">منصة المستثمر</span>
+                      <span className="footer-tag">al-investor.com</span>
                     </div>
                   </div>
                 </div>
